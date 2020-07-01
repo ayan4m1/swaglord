@@ -12,9 +12,12 @@
     "@babel/runtime": "^7.10.4",
     "classnames": "^2.2.6",
     "core-js": "^3.6.5",
+    "d3-color": "^1.4.1",
+    "d3-interpolate": "^1.4.0",
     "normalize-scss": "^7.0.1",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
+    "react-animated-bg": "^1.1.2",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.2.0",
     "reselect": "^4.0.0"
