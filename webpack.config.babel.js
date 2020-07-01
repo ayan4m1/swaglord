@@ -3,6 +3,7 @@ import { resolve } from 'path';
 import { CLIEngine } from 'eslint';
 import HtmlPlugin from 'html-webpack-plugin';
 import TerserPlugin from 'terser-webpack-plugin';
+import CnameWebpackPlugin from 'cname-webpack-plugin';
 import StylelintPlugin from 'stylelint-webpack-plugin';
 import MiniCSSExtractPlugin from 'mini-css-extract-plugin';
 import { CleanWebpackPlugin as CleanPlugin } from 'clean-webpack-plugin';
@@ -25,6 +26,9 @@ const plugins = [
   }),
   new HtmlPlugin({
     template: './src/index.html'
+  }),
+  new CnameWebpackPlugin({
+    domain: 'swaglord.net'
   })
 ];
 
