@@ -7,7 +7,7 @@ import CnameWebpackPlugin from 'cname-webpack-plugin';
 import StylelintPlugin from 'stylelint-webpack-plugin';
 import MiniCSSExtractPlugin from 'mini-css-extract-plugin';
 import { CleanWebpackPlugin as CleanPlugin } from 'clean-webpack-plugin';
-import OptimizeCSSAssetsPlugin from 'optimize-css-assets-webpack-plugin';
+import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
 
 const dev = process.env.NODE_ENV === 'development';
 
@@ -38,7 +38,7 @@ if (dev) {
 
 export default {
   mode: dev ? 'development' : 'production',
-  devtool: dev ? 'cheap-module-eval-source-map' : 'cheap-module-source-map',
+  devtool: dev ? 'eval-cheap-module-source-map' : 'cheap-module-source-map',
   entry: './src/index.js',
   devServer: {
     compress: dev,
@@ -71,12 +71,14 @@ export default {
           {
             loader: 'postcss-loader',
             options: {
-              ident: 'postcss',
-              plugins: [
-                require('autoprefixer'),
-                require('postcss-flexbugs-fixes')
-              ],
-              sourceMap: dev
+              postcssOptions: {
+                ident: 'postcss',
+                plugins: [
+                  require('autoprefixer'),
+                  require('postcss-flexbugs-fixes')
+                ],
+                sourceMap: dev
+              }
             }
           },
           'sass-loader'
@@ -95,7 +97,7 @@ export default {
   },
   output: {
     path: resolve(__dirname, 'dist'),
-    filename: 'main.js',
+    filename: '[name].js',
     chunkFilename: '[name].js'
   },
   plugins,
@@ -111,10 +113,10 @@ export default {
     minimizer: [
       new TerserPlugin({
         terserOptions: {
-          ecma: 9
+          ecma: 12
         }
       }),
-      new OptimizeCSSAssetsPlugin({})
+      new CssMinimizerPlugin()
     ],
     splitChunks: {
       cacheGroups: {
