@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import AnimatedBg from 'react-animated-bg';
 import { interpolateHslLong } from 'd3-interpolate';
 
