@@ -92,6 +92,10 @@ export default {
             options: { minimize: true }
           }
         ]
+      },
+      {
+        test: /\.png$/,
+        type: 'asset/resource'
       }
     ]
   },

@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import AnimatedBg from 'react-animated-bg';
 import { interpolateHslLong } from 'd3-interpolate';
 
+import image from 'images/hex.png';
+
 const imageHeight = 300;
 const imageWidth = 350;
 
@@ -78,7 +80,7 @@ export class App extends Component {
             style={{ transform: `translate(${x}px, ${y}px)` }}
           >
             <img
-              src="https://i.imgur.com/KZqhOIC.png"
+              src={image}
               alt="hex's face"
               height={imageHeight}
               width={imageWidth}
