@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import AnimatedBg from 'react-animated-bg';
 import { interpolateHslLong } from 'd3-interpolate';
 
@@ -7,89 +7,86 @@ import image from 'images/hex.png';
 const imageHeight = 300;
 const imageWidth = 350;
 
-export class App extends Component {
-  constructor(props) {
-    super(props);
+export default function App() {
+  const animateRef = useRef();
+  const [state, setState] = useState({
+    translate: { x: 0, y: 0 },
+    speed: {
+      x: -Math.max(0.5, Math.ceil(Math.random() * 3)),
+      y: -Math.max(0.5, Math.ceil(Math.random() * 3))
+    }
+  });
+  const colors = useMemo(() => {
+    const result = [];
 
-    this.state = {
-      translate: {
-        x: 0,
-        y: 0
-      },
-      speed: {
-        x: -Math.ceil(Math.random() * 3),
-        y: -Math.ceil(Math.random() * 3)
+    for (let i = 0; i <= 1; i += 1 / 32.0) {
+      result.push(interpolateHslLong('red', 'blue')(i));
+    }
+
+    for (let i = 0; i <= 1; i += 1 / 32.0) {
+      result.push(interpolateHslLong('blue', 'red')(i));
+    }
+
+    return result;
+  }, []);
+  const updateFrame = () => {
+    setState((oldState) => {
+      const newState = { ...oldState };
+
+      if (
+        oldState.translate.x <= 0 ||
+        oldState.translate.x + imageWidth >= window.innerWidth
+      ) {
+        newState.speed.x *= -1;
       }
-    };
-    this.colors = [];
 
-    for (let i = 0; i <= 1; i += 1 / 32.0) {
-      this.colors.push(interpolateHslLong('red', 'blue')(i));
-    }
+      if (
+        oldState.translate.y <= 0 ||
+        oldState.translate.y + imageHeight >= window.innerHeight
+      ) {
+        newState.speed.y *= -1;
+      }
 
-    for (let i = 0; i <= 1; i += 1 / 32.0) {
-      this.colors.push(interpolateHslLong('blue', 'red')(i));
-    }
+      newState.translate = {
+        x: oldState.translate.x + newState.speed.x,
+        y: oldState.translate.y + newState.speed.y
+      };
 
-    this.updateFrame = this.updateFrame.bind(this);
-    setTimeout(() => requestAnimationFrame(this.updateFrame), 100);
-  }
+      animateRef.current = requestAnimationFrame(updateFrame);
 
-  updateFrame() {
-    const newState = {
-      ...this.state
-    };
+      return newState;
+    });
+  };
 
-    if (
-      this.state.translate.x <= 0 ||
-      this.state.translate.x + imageWidth >= window.innerWidth
-    ) {
-      newState.speed.x *= -1;
-    }
+  useEffect(() => {
+    animateRef.current = requestAnimationFrame(updateFrame);
 
-    if (
-      this.state.translate.y <= 0 ||
-      this.state.translate.y + imageHeight >= window.innerHeight
-    ) {
-      newState.speed.y *= -1;
-    }
+    return () => cancelAnimationFrame(animateRef.current);
+  }, []);
 
-    newState.translate = {
-      x: this.state.translate.x + newState.speed.x,
-      y: this.state.translate.y + newState.speed.y
-    };
+  const { x, y } = state.translate;
 
-    this.setState(newState, () => requestAnimationFrame(this.updateFrame));
-  }
-
-  render() {
-    const { x, y } = this.state.translate;
-
-    return (
-      <div className="sl-root">
-        <AnimatedBg
-          className="sl-background"
-          colors={this.colors}
-          duration={0.5}
-          delay={0}
-          timingFunction="ease-in"
-          // randomMode
+  return (
+    <div className="sl-root">
+      <AnimatedBg
+        className="sl-background"
+        colors={colors}
+        duration={0.5}
+        delay={0}
+        timingFunction="ease-in"
+      >
+        <div
+          className="sl-text"
+          style={{ transform: `translate(${x}px, ${y}px)` }}
         >
-          <div
-            className="sl-text"
-            style={{ transform: `translate(${x}px, ${y}px)` }}
-          >
-            <img
-              src={image}
-              alt="hex's face"
-              height={imageHeight}
-              width={imageWidth}
-            />
-          </div>
-        </AnimatedBg>
-      </div>
-    );
-  }
+          <img
+            src={image}
+            alt="hex's face"
+            height={imageHeight}
+            width={imageWidth}
+          />
+        </div>
+      </AnimatedBg>
+    </div>
+  );
 }
-
-export default App;
