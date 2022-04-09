@@ -21,4 +21,11 @@ body {
     width: 350px;
     height: 300px;
   }
+
+  &-curves {
+    > div {
+      position: absolute;
+      height: 100%;
+    }
+  }
 }

@@ -1,80 +1,45 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
-import AnimatedBg from 'react-animated-bg';
-import { interpolateHslLong } from 'd3-interpolate';
+import AnimatedBg from '@bulletlogic/react-animated-bg';
+import Wave from 'react-wavify';
 
 import image from 'images/hex.png';
+import { useBounce } from 'hooks/useBounce';
+import { useColorRange } from 'hooks/useColorRange';
 
 const imageHeight = 300;
 const imageWidth = 350;
 
 export default function App() {
-  const animateRef = useRef();
-  const [state, setState] = useState({
-    translate: { x: 0, y: 0 },
-    speed: {
-      x: -Math.max(0.5, Math.ceil(Math.random() * 3)),
-      y: -Math.max(0.5, Math.ceil(Math.random() * 3))
-    }
+  const { translate } = useBounce({
+    width: imageWidth,
+    height: imageHeight
   });
-  const colors = useMemo(() => {
-    const result = [];
+  const colors = useColorRange('#B38184', '#F0B49E');
 
-    for (let i = 0; i <= 1; i += 1 / 32.0) {
-      result.push(interpolateHslLong('red', 'blue')(i));
-    }
-
-    for (let i = 0; i <= 1; i += 1 / 32.0) {
-      result.push(interpolateHslLong('blue', 'red')(i));
-    }
-
-    return result;
-  }, []);
-  const updateFrame = () => {
-    setState((oldState) => {
-      const newState = { ...oldState };
-
-      if (
-        oldState.translate.x <= 0 ||
-        oldState.translate.x + imageWidth >= window.innerWidth
-      ) {
-        newState.speed.x *= -1;
-      }
-
-      if (
-        oldState.translate.y <= 0 ||
-        oldState.translate.y + imageHeight >= window.innerHeight
-      ) {
-        newState.speed.y *= -1;
-      }
-
-      newState.translate = {
-        x: oldState.translate.x + newState.speed.x,
-        y: oldState.translate.y + newState.speed.y
-      };
-
-      animateRef.current = requestAnimationFrame(updateFrame);
-
-      return newState;
-    });
-  };
-
-  useEffect(() => {
-    animateRef.current = requestAnimationFrame(updateFrame);
-
-    return () => cancelAnimationFrame(animateRef.current);
-  }, []);
-
-  const { x, y } = state.translate;
+  const { x, y } = translate;
 
   return (
     <div className="sl-root">
       <AnimatedBg
         className="sl-background"
         colors={colors}
-        duration={0.5}
+        duration={0.1}
         delay={0}
         timingFunction="ease-in"
       >
+        <div className="sl-curves">
+          <Wave
+            fill="url(#gradient)"
+            height={window.innerHeight / 2}
+            points={5}
+          >
+            <defs>
+              <linearGradient id="gradient" gradientTransform="rotate(90)">
+                <stop offset="0%" stopColor={colors[31]} />
+                <stop offset="90%" stopColor={colors[0]} />
+              </linearGradient>
+            </defs>
+          </Wave>
+        </div>
         <div
           className="sl-text"
           style={{ transform: `translate(${x}px, ${y}px)` }}
