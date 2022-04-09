@@ -1,6 +1,4 @@
-import webpack from 'webpack';
 import { resolve } from 'path';
-import { CLIEngine } from 'eslint';
 import HtmlPlugin from 'html-webpack-plugin';
 import TerserPlugin from 'terser-webpack-plugin';
 import CnameWebpackPlugin from 'cname-webpack-plugin';
@@ -8,6 +6,7 @@ import StylelintPlugin from 'stylelint-webpack-plugin';
 import MiniCSSExtractPlugin from 'mini-css-extract-plugin';
 import { CleanWebpackPlugin as CleanPlugin } from 'clean-webpack-plugin';
 import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
+import ESLintWebpackPlugin from 'eslint-webpack-plugin';
 
 const dev = process.env.NODE_ENV === 'development';
 
@@ -18,8 +17,7 @@ const plugins = [
     context: 'src',
     files: '**/*.scss',
     failOnError: true,
-    quiet: false,
-    syntax: 'scss'
+    quiet: false
   }),
   new MiniCSSExtractPlugin({
     filename: '[name].css'
@@ -33,7 +31,7 @@ const plugins = [
 ];
 
 if (dev) {
-  plugins.push(new webpack.HotModuleReplacementPlugin());
+  plugins.push(new ESLintWebpackPlugin());
 }
 
 export default {
@@ -51,15 +49,7 @@ export default {
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        use: [
-          'babel-loader',
-          {
-            loader: 'eslint-loader',
-            options: {
-              formatter: CLIEngine.getFormatter('stylish')
-            }
-          }
-        ]
+        use: ['babel-loader']
       },
       {
         test: /\.(sa|sc|c)ss$/,

@@ -10,8 +10,9 @@ module.exports = {
     'eslint:recommended',
     'plugin:react/recommended',
     'plugin:prettier/recommended',
+    'plugin:react-hooks/recommended',
     'plugin:jsx-a11y/recommended',
-    'plugin:import/errors'
+    'plugin:import/recommended'
   ],
   parser: '@babel/eslint-parser',
   parserOptions: {
