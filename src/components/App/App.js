@@ -25,6 +25,7 @@ export default function App() {
         duration={0.1}
         delay={0}
         timingFunction="ease-in"
+        style={{ overflow: 'hidden' }}
       >
         <div className="sl-curves">
           <Wave
