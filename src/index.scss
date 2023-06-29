@@ -1,31 +1,12 @@
-* {
-  overflow-x: none;
-  overflow-y: none;
+html {
+  height: 100%;
 }
 
 body {
   margin: 0;
+  height: 100%;
 }
 
-.sl {
-  &-background {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-  }
-
-  &-text {
-    margin: 0;
-    width: 350px;
-    height: 300px;
-  }
-
-  &-curves {
-    > div {
-      position: absolute;
-      height: 100%;
-    }
-  }
+body > div {
+  height: 100%;
 }

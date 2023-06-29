@@ -1,58 +1,57 @@
-import AnimatedBg from '@bulletlogic/react-animated-bg';
-import Wave from 'react-wavify';
+import PropTypes from 'prop-types';
+import { useRef } from 'react';
+import { Canvas, useFrame } from '@react-three/fiber';
 
-import image from 'images/hex.png';
-import { useBounce } from 'hooks/useBounce';
-import { useColorRange } from 'hooks/useColorRange';
+// const clamp = (val, min, max) => Math.min(min, Math.max(max, val));
+const lerp = (x, y, alpha) => x * (1 - alpha) + y * alpha;
 
-const imageHeight = 300;
-const imageWidth = 350;
-
-export default function App() {
-  const { translate } = useBounce({
-    width: imageWidth,
-    height: imageHeight
+function Box(props) {
+  const meshRef = useRef();
+  useFrame((scene) => {
+    if (scene.clock.elapsedTime >= props.delayTime) {
+      // meshRef.current.rotation.y += delta;
+      meshRef.current.scale.x = lerp(
+        1,
+        1.5,
+        Math.abs(Math.sin(scene.clock.getElapsedTime() - props.delayTime))
+      );
+      meshRef.current.scale.y = lerp(
+        1,
+        1.5,
+        Math.abs(Math.sin(scene.clock.getElapsedTime() - props.delayTime))
+      );
+      meshRef.current.scale.z = lerp(
+        1,
+        1.5,
+        Math.abs(Math.sin(scene.clock.getElapsedTime() - props.delayTime))
+      );
+    }
   });
-  const colors = useColorRange('#B38184', '#F0B49E');
-
-  const { x, y } = translate;
 
   return (
-    <div className="sl-root">
-      <AnimatedBg
-        className="sl-background"
-        colors={colors}
-        duration={0.1}
-        delay={0}
-        timingFunction="ease-in"
-        style={{ overflow: 'hidden' }}
-      >
-        <div className="sl-curves">
-          <Wave
-            fill="url(#gradient)"
-            height={window.innerHeight / 2}
-            points={5}
-          >
-            <defs>
-              <linearGradient id="gradient" gradientTransform="rotate(90)">
-                <stop offset="0%" stopColor={colors[31]} />
-                <stop offset="90%" stopColor={colors[0]} />
-              </linearGradient>
-            </defs>
-          </Wave>
-        </div>
-        <div
-          className="sl-text"
-          style={{ transform: `translate(${x}px, ${y}px)` }}
-        >
-          <img
-            src={image}
-            alt="hex's face"
-            height={imageHeight}
-            width={imageWidth}
-          />
-        </div>
-      </AnimatedBg>
-    </div>
+    <mesh {...props} ref={meshRef} scale={1}>
+      <boxGeometry args={[1, 1, 1]} />
+      <meshStandardMaterial color={'#3366dd'} />
+    </mesh>
+  );
+}
+
+Box.propTypes = {
+  delayTime: PropTypes.number.isRequired
+};
+
+export default function App() {
+  return (
+    <Canvas>
+      <ambientLight />
+      <pointLight position={[10, 20, 10]} />
+      <Box position={[-3, 0, 0]} delayTime={0} />
+      <Box position={[0, 0, 0]} delayTime={1} />
+      <Box position={[3, 0, 0]} delayTime={2} />
+      <mesh>
+        <planeGeometry args={[100, 100]} />
+        <meshStandardMaterial color={'#262323'} />
+      </mesh>
+    </Canvas>
   );
 }
