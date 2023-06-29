@@ -8,16 +8,9 @@
     "at-rule-empty-line-before": [
       "always",
       {
-        "except": [
-          "blockless-after-blockless",
-          "first-nested"
-        ],
-        "ignore": [
-          "after-comment"
-        ],
-        "ignoreAtRules": [
-          "else"
-        ]
+        "except": ["blockless-after-blockless", "first-nested"],
+        "ignore": ["after-comment"],
+        "ignoreAtRules": ["else"]
       }
     ],
     "at-rule-name-case": "lower",
@@ -48,10 +41,7 @@
     "block-closing-brace-newline-after": [
       "always",
       {
-        "ignoreAtRules": [
-          "else",
-          "if"
-        ]
+        "ignoreAtRules": ["else", "if"]
       }
     ],
     "block-closing-brace-newline-before": "always-multi-line",
@@ -75,17 +65,12 @@
     "comment-empty-line-before": [
       "always",
       {
-        "ignore": [
-          "after-comment",
-          "stylelint-commands"
-        ]
+        "ignore": ["after-comment", "stylelint-commands"]
       }
     ],
     "comment-no-empty": true,
     "comment-whitespace-inside": "always",
-    "comment-word-disallowed-list": [
-      "/^TODO:/"
-    ],
+    "comment-word-disallowed-list": ["/^TODO:/"],
     "custom-media-pattern": null,
     "custom-property-empty-line-before": null,
     "custom-property-pattern": null,
@@ -106,13 +91,9 @@
     "declaration-empty-line-before": "never",
     "declaration-no-important": true,
     "declaration-property-unit-allowed-list": {
-      "border": [
-        "px"
-      ],
+      "border": ["px"],
       "line-height": [],
-      "outline-offset": [
-        "px"
-      ]
+      "outline-offset": ["px"]
     },
     "declaration-property-unit-disallowed-list": {},
     "declaration-property-value-allowed-list": {},
@@ -171,10 +152,7 @@
     "number-max-precision": [
       2,
       {
-        "ignoreUnits": [
-          "em",
-          "rem"
-        ]
+        "ignoreUnits": ["em", "rem"]
       }
     ],
     "number-no-trailing-zeros": true,
@@ -186,12 +164,8 @@
     "rule-empty-line-before": [
       "always",
       {
-        "except": [
-          "first-nested"
-        ],
-        "ignore": [
-          "after-comment"
-        ]
+        "except": ["first-nested"],
+        "ignore": ["after-comment"]
       }
     ],
     "selector-attribute-brackets-space-inside": "never",

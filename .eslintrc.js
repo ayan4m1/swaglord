@@ -24,7 +24,8 @@ module.exports = {
   },
   rules: {
     'react/jsx-uses-react': 0,
-    'react/react-in-jsx-scope': 0
+    'react/react-in-jsx-scope': 0,
+    'react/no-unknown-property': 0
   },
   settings: {
     react: {
