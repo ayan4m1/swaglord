@@ -7,6 +7,8 @@ import MiniCSSExtractPlugin from 'mini-css-extract-plugin';
 import { CleanWebpackPlugin as CleanPlugin } from 'clean-webpack-plugin';
 import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
 import ESLintWebpackPlugin from 'eslint-webpack-plugin';
+// eslint-disable-next-line import/default
+import CopyPlugin from 'copy-webpack-plugin';
 
 const dev = process.env.NODE_ENV === 'development';
 
@@ -27,6 +29,9 @@ const plugins = [
   }),
   new CnameWebpackPlugin({
     domain: 'swaglord.net'
+  }),
+  new CopyPlugin({
+    patterns: [{ from: 'public/' }]
   })
 ];
 
