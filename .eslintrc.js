@@ -17,10 +17,7 @@ module.exports = {
   parser: '@babel/eslint-parser',
   parserOptions: {
     requireConfigFile: false,
-    ecmaFeatures: {
-      jsx: true
-    },
-    ecmaVersion: 12
+    ecmaVersion: 14
   },
   rules: {
     'react/jsx-uses-react': 0,

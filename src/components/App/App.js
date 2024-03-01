@@ -1,17 +1,12 @@
 import PropTypes from 'prop-types';
-import { useRef } from 'react';
+import { useRef, Suspense } from 'react';
+import { interpolateHslLong } from 'd3-interpolate';
 import { Canvas, useFrame, useLoader } from '@react-three/fiber';
-import {
-  EffectComposer,
-  Bloom,
-  Vignette
-  // eslint-disable-next-line import/no-unresolved
-} from '@react-three/postprocessing';
 import { STLLoader } from 'three/examples/jsm/loaders/STLLoader';
 // eslint-disable-next-line import/no-unresolved
 import { Color, NearestFilter, TextureLoader } from 'three';
-
-import { interpolateHslLong } from 'd3-interpolate';
+// eslint-disable-next-line import/no-unresolved
+import { EffectComposer, Bloom, Vignette } from '@react-three/postprocessing';
 
 // const clamp = (val, min, max) => Math.min(min, Math.max(max, val));
 const lerp = (x, y, alpha) => x * (1 - alpha) + y * alpha;
@@ -107,24 +102,27 @@ export default function App() {
 
   return (
     <Canvas shadows>
-      <ambientLight />
-      <PointLight />
-      <Text position={[0, 2, 0]} scale={0.1} castShadow />
-      <Box position={[-3, -1, 0]} delayTime={0} castShadow />
-      <Box position={[0, -1, 0]} delayTime={1} castShadow />
-      <Box position={[3, -1, 0]} delayTime={2} castShadow />
-      <mesh receiveShadow>
-        <planeGeometry args={[100, 100]} />
-        <meshToonMaterial gradientMap={tex} color={'#262323'} />
-      </mesh>
-      <EffectComposer>
-        <Bloom
-          luminanceThreshold={0.25}
-          luminanceSmoothing={0.9}
-          intensity={3}
-        />
-        <Vignette eskil={false} offset={0.1} darkness={1.1} />
-      </EffectComposer>
+      <Suspense fallback={<Text position={[0, 2, 0]} scale={0.1} castShadow />}>
+        <ambientLight />
+        <PointLight />
+
+        <Text position={[0, 2, 0]} scale={0.1} castShadow />
+        <Box position={[-3, -1, 0]} delayTime={0} castShadow />
+        <Box position={[0, -1, 0]} delayTime={1} castShadow />
+        <Box position={[3, -1, 0]} delayTime={2} castShadow />
+        <mesh receiveShadow>
+          <planeGeometry args={[100, 100]} />
+          <meshToonMaterial gradientMap={tex} color={'#262323'} />
+        </mesh>
+        <EffectComposer>
+          <Bloom
+            luminanceThreshold={0.25}
+            luminanceSmoothing={0.9}
+            intensity={3}
+          />
+          <Vignette eskil={false} offset={0.1} darkness={1.1} />
+        </EffectComposer>
+      </Suspense>
     </Canvas>
   );
 }
